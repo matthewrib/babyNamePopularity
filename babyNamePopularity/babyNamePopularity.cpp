@@ -18,7 +18,7 @@ int main() {
 	string name, gender;
 	cout << "Enter your name: ";
 	cin >> name;
-	cout << "Enter your gender (boy or girl): ";
+	cout << "Enter your gender (M or F): ";
 	cin >> gender;
 	cin.ignore();
 	render(name, gender);
@@ -30,6 +30,13 @@ void render(string name, string gender) {
 	int oldRank = findRanking("babyNames1973.txt", name, gender);
 	int currentRank = findRanking("babyNames2023.txt", name, gender);
 	int gap;
+	string kid;
+	if (gender == "F") {
+		kid = "girl";
+	}
+	else {
+		kid = "boy";
+	}
 
 	if (currentRank != -1 && oldRank != -1) {
 		if (oldRank < currentRank) {
@@ -45,10 +52,13 @@ void render(string name, string gender) {
 		}
 	}
 	else if (currentRank != -1 && oldRank == -1) {
-		cout << "The name " << name << " was ranked " << currentRank << ", while it was not present in 1972.";
+		cout << "The name " << name << " was ranked " << currentRank << " in 2023, while it was not present in 1972.";
+	}
+	else if (currentRank == -1 && oldRank != -1) {
+		cout << "The name " << name << " was ranked " << oldRank << " in 1972, but it is no longer present.";
 	}
 	else {
-		cout << "The name " << name << " was ranked " << oldRank << ", but it is no longer present.";
+		cout << "The name " << name << " was not among the top 1000 " << kid << " names in popularity in any year.";
 	}
 }
 
@@ -60,12 +70,12 @@ int findRanking(string filename, string name, string gender) {
 
 	while (!babyNames.eof()) {
 		babyNames >> ranking >> maleName >> maleNumber >> femaleName >> femaleNumber;
-		if (gender == "girl") {
+		if (gender == "F") {
 			if (name == femaleName) {
 				break;
 			}
 		}
-		else if (gender == "boy") {
+		else if (gender == "M") {
 			if (name == maleName) {
 				break;
 			}
